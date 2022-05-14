@@ -1,7 +1,7 @@
 #ifndef MYSENSORSLFGATEWAY_H
 #define MYSENSORSLFGATEWAY_H
 
-#include "MyMessage.h"
+#include "MySensors/MyMessage.h"
 #include <string>
 
 typedef bool(*SendMessageFunc)(char* buf, void* cookie);
@@ -11,7 +11,7 @@ class MySensorsLFGateway
 {
 public:
     MySensorsLFGateway(SendMessageFunc sendMessageFunc = nullptr, RecaiveMessageFunc receiveMessageFunc = nullptr);
-    void ClientConnected(void* cookie);
+    void ClientConnected(void* cookie = nullptr);
 
     void SetSketchInfo(std::string source, std::string version = "", bool requestEcho = false);
     bool SetEntity(const uint8_t childSensorId, const mysensors_sensor_t sensorType, std::string description, mysensors_data_t dataType);

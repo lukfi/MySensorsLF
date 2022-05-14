@@ -2,16 +2,23 @@
 #include <memory>
 
 #include "defines.h"
-#include "MyIndication.h"
-#include "MyHelperFunctions.h"
-#include "Version.h"
+#include "MySensors/MyIndication.h"
+#include "MySensors/MyHelperFunctions.h"
+#include "MySensors/Version.h"
 
+#if defined(ESP8266)
+#define SDEB(...) Serial.printf(__VA_ARGS__)
+#define SERR(...) Serial.printf(__VA_ARGS__)
+#define SWARN(...) Serial.printf(__VA_ARGS__)
+#define SINFO(...) Serial.printf(__VA_ARGS__)
+#else
 /********** DEBUG SETUP **********/
 #define ENABLE_SDEBUG
 #define DEBUG_PREFIX "MySensorsLFGateway: "
 #include "utils/singleton.h"
 #include "utils/screenlogger.h"
 /*********************************/
+#endif
 
 MySensorsLFGateway::MySensorsLFGateway(SendMessageFunc sendMessageFunc, RecaiveMessageFunc receiveMessageFunc) :
     mSendMessageFunc(sendMessageFunc),
@@ -216,7 +223,7 @@ bool MySensorsLFGateway::SendRoute(MyMessage &message)
 bool MySensorsLFGateway::GatewayTransportSend(MyMessage&msg, void* cookie)
 {
     bool ret = false;
-    if (mSendMessageFunc && cookie)
+    if (mSendMessageFunc)
     {
         char* buf = ProtocolMyMessage2Serial(msg);
         SINFO("-> %s", buf);

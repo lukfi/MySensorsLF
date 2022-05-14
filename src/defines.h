@@ -15,8 +15,7 @@
 #define FUNCTION_NOT_SUPPORTED  ((uint16_t)0)   //!< Function not supported
 
 #define MSG_GW_STARTUP_COMPLETE "Gateway startup complete." //!< Gateway startup message
-
-#include "export/systeminfo.h"
+#if 0
 #if M_OS == M_OS_LINUX || M_OS == M_OS_WINDOWS
 #include <cmath>
 #include <cstdint>
@@ -56,5 +55,5 @@ static char* dtostrf (double val, signed char width, unsigned char prec, char *s
     return sout;
 }
 #endif
-
+#endif
 #endif // DEFINES_H
