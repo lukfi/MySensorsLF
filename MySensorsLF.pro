@@ -4,13 +4,13 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 
-INCLUDEPATH +=  ../Common/System MySensors
+INCLUDEPATH +=  ../Common/System src
 
 SOURCES += \
-        MySensors/MyHelperFunctions.cpp \
-        MySensors/MyMessage.cpp \
+        src/MySensors/MyHelperFunctions.cpp \
+        src/MySensors/MyMessage.cpp \
         main.cpp \
-        mysensorslfgateway.cpp \
+        src/mysensorslfgateway.cpp \
         transport.cpp
 
 CONFIG(debug, debug|release) {
@@ -22,10 +22,10 @@ CONFIG(debug, debug|release) {
 LIBS += -lMultimedia -lSystem -latomic -lpthread
 
 HEADERS += \
-    MySensors/MyHelperFunctions.h \
-    MySensors/MyIndication.h \
-    MySensors/MyMessage.h \
-    MySensors/Version.h \
-    defines.h \
-    mysensorslfgateway.h \
+    src/MySensors/MyHelperFunctions.h \
+    src/MySensors/MyIndication.h \
+    src/MySensors/MyMessage.h \
+    src/MySensors/Version.h \
+    src/defines.h \
+    src/mysensorslfgateway.h \
     transport.h

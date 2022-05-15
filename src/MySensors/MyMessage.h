@@ -32,7 +32,9 @@
 #define MyMessage_h
 
 #ifdef __cplusplus
-//#include <Arduino.h>
+#if defined(ESP8266)
+#include <Arduino.h>
+#endif
 #include <stdint.h>
 #endif
 

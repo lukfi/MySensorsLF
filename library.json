@@ -1,0 +1,22 @@
+{
+  "name": "MySensorsLF",
+  "keywords": "mysensors, gateway",
+  "description": "MySensors alternative implementation",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/lukfi/MySensorsLF.git"
+  },
+  "authors":
+  [
+    {
+      "name": "Łukasz Finster",
+      "email": "lukasz.finster@mgial.com",
+      "url": "https://github.com/lukfi/",
+      "maintainer": true
+    }
+  ],
+  "version": "0.0.1",
+  "frameworks": "arduino",
+  "platforms": "*"
+}
