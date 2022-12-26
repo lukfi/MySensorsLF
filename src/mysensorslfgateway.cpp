@@ -6,7 +6,7 @@
 #include "MySensors/MyHelperFunctions.h"
 #include "MySensors/Version.h"
 
-#if defined(ESP8266)
+#if defined(ESP8266) || defined(ESP32)
 #define SDEB(...) Serial.printf(__VA_ARGS__)
 #define SERR(...) Serial.printf(__VA_ARGS__)
 #define SWARN(...) Serial.printf(__VA_ARGS__)
