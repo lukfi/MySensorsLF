@@ -277,6 +277,7 @@ char* MyMessage::getStream(char *buffer) const
         return NULL;
     }
 }
+
 #define min(X,Y) ((X)<(Y)?(X):(Y))
 char* MyMessage::getString(char *buffer) const
 {
