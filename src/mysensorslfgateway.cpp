@@ -20,9 +20,10 @@
 /*********************************/
 #endif
 
-MySensorsLFGateway::MySensorsLFGateway(SendMessageFunc sendMessageFunc, RecaiveMessageFunc receiveMessageFunc) :
+MySensorsLFGateway::MySensorsLFGateway(SendMessageFunc sendMessageFunc, RecaiveMessageFunc receiveMessageFunc, void* cookie) :
     mSendMessageFunc(sendMessageFunc),
-    mReceiveFunc(receiveMessageFunc)
+    mReceiveFunc(receiveMessageFunc),
+    mCookie(cookie)
 {
 
 }
@@ -44,7 +45,7 @@ void MySensorsLFGateway::SetSketchInfo(std::string source, std::string version, 
     mSketchInfo.mRequestEcho = requestEcho;
 }
 
-bool MySensorsLFGateway::SetEntity(const uint8_t childSensorId, const mysensors_sensor_t sensorType, std::string description, mysensors_data_t dataType)
+bool MySensorsLFGateway::SetEntity(const uint8_t childSensorId, const mysensors_sensor_t sensorType, std::string description, mysensors_data_t dataType, const std::string& customUnit)
 {
     bool ret = false;
 
@@ -74,6 +75,7 @@ bool MySensorsLFGateway::SetEntity(const uint8_t childSensorId, const mysensors_
             mEntities[newIndex].mMessage.clear();
             mEntities[newIndex].mMessage.setSensor(childSensorId);
             mEntities[newIndex].mMessage.setType(dataType);
+            mEntities[newIndex].mCustomUnit = customUnit;
             ret = true;
             SDEB("Added entity[%d]: %s, type:%d", mEntities[newIndex].mId, mEntities[newIndex].mName, mEntities[newIndex].mType);
         }
@@ -128,7 +130,7 @@ void MySensorsLFGateway::Receive(char *buf, uint32_t size)
             {
                 // Add string terminator and prepare for the next message
                 //GATEWAY_DEBUG(PSTR("GWT:RFC:C=%" PRIu8 ",MSG=%s\n"), i, inputString[i].string);
-                SINFO("<- %s\n", mReceiveBuffer);
+                SINFO("<- %s", mReceiveBuffer);
                 mReceiveBuffer[mReceiveBufferOccupancy] = 0;
                 mReceiveBufferOccupancy = 0;
                 if (ProtocolSerial2MyMessage(mEthernetMsg, mReceiveBuffer))
@@ -144,6 +146,12 @@ void MySensorsLFGateway::Receive(char *buf, uint32_t size)
                         {
                             // Request for version. Create the response
                             GatewayTransportSend(BuildGw(mMsgTemp, I_VERSION).set(MYSENSORS_LIBRARY_VERSION), mCookie);
+                        }
+                        else if (mEthernetMsg.getType() == I_DISCOVER_REQUEST)
+                        {
+                            SWARN("I_DISCOVER_REQUEST");
+
+                            GatewayTransportSend(BuildGw(mMsgTemp, I_DISCOVER_RESPONSE).set(NODE_SENSOR_ID), mCookie);
                         }
                         else
                         {
@@ -220,7 +228,7 @@ bool MySensorsLFGateway::SendRoute(MyMessage &message)
     return false;
 }
 
-bool MySensorsLFGateway::GatewayTransportSend(MyMessage&msg, void* cookie)
+bool MySensorsLFGateway::GatewayTransportSend(MyMessage& msg, void* cookie)
 {
     bool ret = false;
     if (mSendMessageFunc)
@@ -241,9 +249,11 @@ void MySensorsLFGateway::PresentNode()
 
 bool MySensorsLFGateway::Present(const uint8_t childSensorId, const mysensors_sensor_t sensorType, const char *description, const bool requestEcho)
 {
-    return SendRoute(Build(mMsgTemp, GATEWAY_ADDRESS, childSensorId, C_PRESENTATION,
-                           static_cast<uint8_t>(sensorType),
-                           requestEcho).set(childSensorId == NODE_SENSOR_ID ? MYSENSORS_LIBRARY_VERSION : description));
+    SINFO("PRESENTATION of %d", childSensorId);
+    bool ret =  SendRoute(Build(mMsgTemp, GATEWAY_ADDRESS, childSensorId, C_PRESENTATION,
+                          static_cast<uint8_t>(sensorType),
+                          requestEcho).set(childSensorId == NODE_SENSOR_ID ? MYSENSORS_LIBRARY_VERSION : description));
+    return ret;
 }
 
 void MySensorsLFGateway::Presentation()

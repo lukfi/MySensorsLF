@@ -8,7 +8,8 @@
 /*********************************/
 
 
-Transport::Transport()
+Transport::Transport() :
+    mThread("Transport_Thread")
 {
     mThread.Start();
     CONNECT(mServer.CLIENT_CONNECTED, Transport, OnClientConnected);
@@ -25,7 +26,7 @@ void Transport::Open(uint16_t port)
 
 void Transport::Send(char *buf, uint32_t size, void *cookie)
 {
-    if (cookie && reinterpret_cast<TCP_Socket*>(cookie) == mSocket)
+    if (mSocket)//cookie && reinterpret_cast<TCP_Socket*>(cookie) == mSocket)
     {
         ssize_t sent = mSocket->Write(buf, size);
         SDEB("Sent %d bytes", sent);
@@ -61,5 +62,5 @@ void Transport::OnError(Socket *)
 {
     mThread.DeleteLater(mSocket);
     SERR("Disconnected");
-//    mThread.StopLater();
+    DISCONNECTED.Emit();
 }

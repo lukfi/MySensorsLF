@@ -10,17 +10,18 @@ typedef void(*RecaiveMessageFunc)(MyMessage& rcv);
 class MySensorsLFGateway
 {
 public:
-    MySensorsLFGateway(SendMessageFunc sendMessageFunc = nullptr, RecaiveMessageFunc receiveMessageFunc = nullptr);
+    MySensorsLFGateway(SendMessageFunc sendMessageFunc = nullptr, RecaiveMessageFunc receiveMessageFunc = nullptr, void* cookie = nullptr);
     void ClientConnected(void* cookie = nullptr);
 
     void SetSketchInfo(std::string source, std::string version = "", bool requestEcho = false);
-    bool SetEntity(const uint8_t childSensorId, const mysensors_sensor_t sensorType, std::string description, mysensors_data_t dataType);
+    bool SetEntity(const uint8_t childSensorId, const mysensors_sensor_t sensorType, std::string description, mysensors_data_t dataType, const std::string& customUnit = "");
 
     MyMessage* GetMyMessage(const uint8_t sensorId);
     bool SendMyMessage(const uint8_t sensorId, bool requestEcho = false);
 
     void Receive(char* buf, uint32_t size);
-private:
+
+protected:
     MyMessage& BuildGw(MyMessage& msg, int8_t type);
     MyMessage& Build(MyMessage &msg, const uint8_t destination, const uint8_t sensor,  const mysensors_command_t command, const uint8_t type, const bool requestEcho = false);
 
@@ -68,6 +69,7 @@ private:
         mysensors_sensor_t mType;
         char mName[32];
         MyMessage mMessage;
+        std::string mCustomUnit;
     } mEntities[MAX_ENTITIES];
 };
 

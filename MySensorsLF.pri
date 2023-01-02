@@ -1,4 +1,4 @@
-INCLUDEPATH += $$PWD/src
+INCLUDEPATH += $$PWD/src $$PWD
 
 SOURCES += \
         $$PWD/src/MySensors/MyHelperFunctions.cpp \

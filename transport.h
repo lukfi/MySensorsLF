@@ -14,8 +14,9 @@ public:
     }
     void Send(char* buf, uint32_t size, void* cookie);
 
-    Signal<void(void*)> CONNECTED;
+    Signal<void(TCP_Socket*)> CONNECTED;
     Signal<void(char*, uint32_t)> READ;
+    Signal<void()> DISCONNECTED;
 private:
     void OnClientConnected();
     void OnReadyRead(Socket*);
