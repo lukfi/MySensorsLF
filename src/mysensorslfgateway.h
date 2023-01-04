@@ -36,7 +36,7 @@ protected:
 
     uint8_t GetNodeId(void);
 
-    char* ProtocolMyMessage2Serial(const MyMessage &message);
+    char* ProtocolMyMessage2Serial(MyMessage &message);
     bool ProtocolSerial2MyMessage(MyMessage &message, char *inputString);
 
     static const int MY_GATEWAY_MAX_SEND_LENGTH = 128;

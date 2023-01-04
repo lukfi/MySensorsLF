@@ -36,6 +36,7 @@
 #include <Arduino.h>
 #endif
 #include <stdint.h>
+#include <string.h>
 #endif
 
 #define V2_MYS_HEADER_PROTOCOL_VERSION      (2u) //!< Protocol version
@@ -323,7 +324,7 @@ public:
     /**
      * @brief Copy the payload into the supplied buffer
      */
-    char* getString(char *buffer) const;
+    char* getString(char *buffer);
 
     /**
      * @brief Get payload as string

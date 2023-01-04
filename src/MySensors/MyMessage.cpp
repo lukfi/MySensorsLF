@@ -23,8 +23,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "defines.h"
+#include <cstdlib>
 
 #if M_OS == M_OS_LINUX || M_OS == M_OS_WINDOWS
 #include <cmath>
@@ -315,7 +315,7 @@ char* MyMessage::getStream(char *buffer) const
 }
 
 #define min(X,Y) ((X)<(Y)?(X):(Y))
-char* MyMessage::getString(char *buffer) const
+char* MyMessage::getString(char *buffer)
 {
     if (buffer != NULL) {
         const uint8_t payloadType = this->getPayloadType();
@@ -323,15 +323,20 @@ char* MyMessage::getString(char *buffer) const
             (void)strncpy(buffer, this->data, this->getLength());
             buffer[this->getLength()] = 0;
         } else if (payloadType == P_BYTE) {
-            (void)itoa(bValue, buffer, 10);
+            bValue = atoi(buffer);
+            //(void)itoa(bValue, buffer, 10);
         } else if (payloadType == P_INT16) {
-            (void)itoa(iValue, buffer, 10);
+            iValue = atoi(buffer);
+            //(void)itoa(iValue, buffer, 10);
         } else if (payloadType == P_UINT16) {
-            (void)ltoa(uiValue, buffer, 10);
+            uiValue = atol(buffer);
+            //(void)ltoa(uiValue, buffer, 10);
         } else if (payloadType == P_LONG32) {
-            (void)ltoa(lValue, buffer, 10);
+            lValue = atol(buffer);
+            //(void)ltoa(lValue, buffer, 10);
         } else if (payloadType == P_ULONG32) {
-            (void)ltoa(ulValue, buffer, 10);
+            ulValue = atol(buffer);
+            //(void)ltoa(ulValue, buffer, 10);
         } else if (payloadType == P_FLOAT32) {
             (void)dtostrf(fValue, 2, min(fPrecision, (uint8_t)8u), buffer);
         } else if (payloadType == P_CUSTOM) {
