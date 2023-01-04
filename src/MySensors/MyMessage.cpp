@@ -323,19 +323,24 @@ char* MyMessage::getString(char *buffer)
             (void)strncpy(buffer, this->data, this->getLength());
             buffer[this->getLength()] = 0;
         } else if (payloadType == P_BYTE) {
-            bValue = atoi(buffer);
+            sprintf(buffer, "%d", bValue);
+            //bValue = atoi(buffer);
             //(void)itoa(bValue, buffer, 10);
         } else if (payloadType == P_INT16) {
-            iValue = atoi(buffer);
+            sprintf(buffer, "%d", iValue);
+            //iValue = atoi(buffer);
             //(void)itoa(iValue, buffer, 10);
         } else if (payloadType == P_UINT16) {
-            uiValue = atol(buffer);
+            sprintf(buffer, "%d", uiValue);
+            //uiValue = atol(buffer);
             //(void)ltoa(uiValue, buffer, 10);
         } else if (payloadType == P_LONG32) {
-            lValue = atol(buffer);
+            sprintf(buffer, "%d", lValue);
+            //lValue = atol(buffer);
             //(void)ltoa(lValue, buffer, 10);
         } else if (payloadType == P_ULONG32) {
-            ulValue = atol(buffer);
+            sprintf(buffer, "%d", ulValue);
+            //ulValue = atol(buffer);
             //(void)ltoa(ulValue, buffer, 10);
         } else if (payloadType == P_FLOAT32) {
             (void)dtostrf(fValue, 2, min(fPrecision, (uint8_t)8u), buffer);
