@@ -295,7 +295,7 @@ uint8_t MySensorsLFGateway::GetNodeId()
     return result;
 }
 
-char* MySensorsLFGateway::ProtocolMyMessage2Serial(const MyMessage &message)
+char* MySensorsLFGateway::ProtocolMyMessage2Serial(MyMessage& message)
 {
     sprintf(mMessageBuffer, //(uint8_t)MY_GATEWAY_MAX_SEND_LENGTH,
             "%d;%d;%d;%d;%d;%s\n",
